@@ -7,7 +7,16 @@
 */
 
 import { Router } from 'express'
+import {
+  listTopics,
+  listQuestionsByTopic,
+  randomQuestion
+} from '../controllers/trivia-controller.js'
 
 let router = Router()
+
+router.get('/topics', listTopics)
+router.get('/topic/:topic', listQuestionsByTopic)
+router.get('/random', randomQuestion)
 
 export default router
