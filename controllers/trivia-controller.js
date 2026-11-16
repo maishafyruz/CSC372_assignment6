@@ -7,7 +7,7 @@
 */
 
 import {
-  getAllTopics, findTopic, getQuestionsByTopic, getRandomQuestion
+  getAllTopics, findTopic, getQuestionsByTopic, getRandomQuestion, getQuestionById, createTopic, addQuestion
 } from '../models/trivia-model.js'
 
 /**
@@ -87,4 +87,94 @@ export async function randomQuestion(req, res) {
   }
 
   res.json(question)
+}
+
+/**
+ * Checks a submitted answer for a trivia question.
+ * @param {Object} req - The Express request object.
+ * @param {Object} res - The Express response object.
+ * @return {Promise<void>} Sends whether the guess is correct and the correct answer.
+ */
+export async function checkAnswer(req, res) {
+  let id = req.body.id
+  let guess = req.body.guess
+
+  if (!id || !guess) {
+    return res.status(400).json({
+      error: 'Question id and guess are required.'
+    })
+  }
+
+  let question = await getQuestionById(id)
+
+  if (!question) {
+    return res.status(404).json({
+      error: 'Question not found.'
+    })
+  }
+
+  let correct =
+    guess.trim().toLowerCase() ===
+    question.answer.trim().toLowerCase()
+
+  res.json({
+    correct: correct,
+    answer: question.answer
+  })
+}
+
+/**
+ * Adds a new trivia question and creates the topic if needed.
+ * @param {Object} req - The Express request object.
+ * @param {Object} res - The Express response object.
+ * @return {Promise<void>} Sends the updated list of questions for the topic.
+ */
+export async function createQuestion(req, res) {
+  if (
+    !req.body ||
+    !req.body.topic ||
+    !req.body.question ||
+    !req.body.answer ||
+    !req.body.difficulty
+  ) {
+    return res.status(400).json({
+      error: 'Topic, question, answer, and difficulty are required.'
+    })
+  }
+
+  let topicName = req.body.topic
+  let questionText = req.body.question
+  let answer = req.body.answer
+  let difficulty = req.body.difficulty
+
+  if (
+    difficulty !== 'easy' &&
+    difficulty !== 'medium' &&
+    difficulty !== 'hard'
+  ) {
+    return res.status(400).json({
+      error: 'Difficulty must be easy, medium, or hard.'
+    })
+  }
+
+  let topic = await findTopic(topicName)
+
+  if (!topic) {
+    topic = await createTopic(topicName)
+  }
+
+  await addQuestion(
+    topic.id,
+    questionText,
+    answer,
+    difficulty
+  )
+
+  let questions = await getQuestionsByTopic(
+    topic.id,
+    undefined,
+    undefined
+  )
+
+  res.status(201).json(questions)
 }

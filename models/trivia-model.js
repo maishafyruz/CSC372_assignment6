@@ -80,3 +80,50 @@ export async function getRandomQuestion() {
 
   return result.rows[0]
 }
+
+/**
+ * Gets a question by id.
+ * @param {number} id - The question id.
+ * @return {Promise<Object|undefined>} The matching question.
+ */
+export async function getQuestionById(id) {
+  let result = await pool.query(
+    'SELECT * FROM questions WHERE id = $1',
+    [id]
+  )
+
+  return result.rows[0]
+}
+
+/**
+ * Creates a new trivia topic.
+ * @param {string} name - The topic name.
+ * @return {Promise<Object>} The newly created topic.
+ */
+export async function createTopic(name) {
+  let result = await pool.query(
+    'INSERT INTO topics (name) VALUES ($1) RETURNING *',
+    [name]
+  )
+
+  return result.rows[0]
+}
+
+/**
+ * Adds a new trivia question to the database.
+ * @param {number} topicId - The topic id.
+ * @param {string} question - The trivia question.
+ * @param {string} answer - The correct answer.
+ * @param {string} difficulty - The question difficulty.
+ * @return {Promise<Object>} The newly created question.
+ */
+export async function addQuestion(topicId, question, answer, difficulty) {
+  let result = await pool.query(
+    `INSERT INTO questions (topic_id, question, answer, difficulty)
+     VALUES ($1, $2, $3, $4)
+     RETURNING *`,
+    [topicId, question, answer, difficulty]
+  )
+
+  return result.rows[0]
+}
