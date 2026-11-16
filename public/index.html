@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<!--
+  Name: Maisha Fyruz
+  Date: 11.15.2026
+  CSC 372-01
+
+  This is the main page for the Triviabook application. It allows users
+  to view trivia topics, get a random question, check answers, search
+  questions by topic, and add new trivia questions.
+-->
+
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Triviabook</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+  <header>
+    <h1>Triviabook</h1>
+    <p>Test your knowledge with trivia questions.</p>
+  </header>
+
+  <main>
+    <section id="topics-section">
+      <h2>Trivia Topics</h2>
+      <div id="topics-list"></div>
+    </section>
+
+    <section id="topic-search-section">
+      <h2>Search Questions by Topic</h2>
+
+      <form id="topic-search-form">
+        <label for="topic-input">Topic:</label>
+        <input type="text" id="topic-input">
+
+        <label for="difficulty-select">Difficulty:</label>
+        <select id="difficulty-select">
+          <option value="">All</option>
+          <option value="easy">Easy</option>
+          <option value="medium">Medium</option>
+          <option value="hard">Hard</option>
+        </select>
+
+        <label for="limit-input">Limit:</label>
+        <input type="number" id="limit-input" min="1">
+
+        <button type="submit">Search</button>
+      </form>
+
+      <div id="topic-results"></div>
+    </section>
+
+    <section id="random-section">
+      <h2>Random Question</h2>
+      <button id="random-button" type="button">Get Random Question</button>
+      <div id="random-question"></div>
+    </section>
+
+    <section id="answer-section">
+      <h2>Check an Answer</h2>
+
+      <form id="answer-form">
+        <label for="question-id">Question ID:</label>
+        <input type="number" id="question-id" min="1" required>
+
+        <label for="guess-input">Your Guess:</label>
+        <input type="text" id="guess-input" required>
+
+        <button type="submit">Check Answer</button>
+      </form>
+
+      <div id="answer-result"></div>
+    </section>
+
+    <section id="add-question-section">
+      <h2>Add a Question</h2>
+
+      <form id="add-question-form">
+        <label for="new-topic">Topic:</label>
+        <input type="text" id="new-topic" required>
+
+        <label for="new-question">Question:</label>
+        <input type="text" id="new-question" required>
+
+        <label for="new-answer">Answer:</label>
+        <input type="text" id="new-answer" required>
+
+        <label for="new-difficulty">Difficulty:</label>
+        <select id="new-difficulty" required>
+          <option value="">Choose difficulty</option>
+          <option value="easy">Easy</option>
+          <option value="medium">Medium</option>
+          <option value="hard">Hard</option>
+        </select>
+
+        <button type="submit">Add Question</button>
+      </form>
+
+      <div id="add-question-result"></div>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
