@@ -6,7 +6,7 @@ The browser interface allows users to view trivia topics, search questions by to
 
 ## Live Application
 
-Render deployment link: **To be added after deployment**
+Render deployment link: **https://csc372-assignment6.onrender.com**
 
 ## Technologies Used
 
